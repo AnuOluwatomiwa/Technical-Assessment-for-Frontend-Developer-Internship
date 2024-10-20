@@ -5,6 +5,7 @@ import SearchInput from '../components/SearchInput';
 import UserProfile from '../components/UserProfile';
 import RepoList from '../components/RepoList';
 import Link from "next/link";
+import { motion } from "framer-motion"; // Importing framer-motion for animations
 
 export default function UserSearch() {
   const [userData, setUserData] = useState<any>(null);
@@ -42,14 +43,22 @@ export default function UserSearch() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] dark:bg-gray-900 dark:text-white">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-3xl font-bold">GitHub User Profile Search</h1>
-        
+        {/* Animated heading for the User Profile Search */}
+        <motion.h1
+          className="text-4xl font-bold"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          GitHub User Profile Search
+        </motion.h1>
+
         {/* Search Input */}
         <SearchInput onSubmit={handleSearch} />
 
-        {loading && <p>Loading...</p>}
+        {loading && <p className="text-xl font-light dark:text-gray-300">Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
         {userData && (
           <UserProfile 
@@ -64,7 +73,7 @@ export default function UserSearch() {
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <Link href="/">
-          <button className="rounded-full bg-gray-500 text-white py-2 px-4 hover:bg-gray-600 transition duration-200">
+          <button className="rounded-full bg-gray-500 text-white py-2 px-4 hover:bg-gray-600 transition duration-200 dark:bg-gray-400 dark:hover:bg-gray-500">
             Back to Home
           </button>
         </Link>
