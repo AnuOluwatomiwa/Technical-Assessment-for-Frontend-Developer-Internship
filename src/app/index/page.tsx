@@ -2,6 +2,7 @@
 
 import Head from 'next/head';
 import { useState } from 'react';
+import Image from 'next/image'; // Importing the optimized Image component from next/image
 import SearchInput from '../components/SearchInput';
 
 // Interface for GitHub user data fetched from the API
@@ -56,7 +57,14 @@ const Home: React.FC = () => {
 
                 {user && (
                     <div className="mt-4">
-                        <img src={user.avatar_url} alt="Avatar" className="rounded-full h-20 w-20 mb-2" /> {/* User's avatar */}
+                        {/* Optimized Image component for user's avatar */}
+                        <Image 
+                            src={user.avatar_url} 
+                            alt="Avatar" 
+                            width={80} // Provide width to optimize the image
+                            height={80} // Provide height to optimize the image
+                            className="rounded-full mb-2" 
+                        />
                         <h2 className="text-xl font-semibold">{user.name}</h2> {/* User's name */}
                         <p className="text-gray-600">{user.bio}</p> {/* User's bio */}
                         <p className="mt-2">
