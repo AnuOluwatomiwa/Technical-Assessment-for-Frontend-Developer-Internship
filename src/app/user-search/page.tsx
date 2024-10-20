@@ -1,83 +1,74 @@
-"use client"; // This line is added to mark the component as a Client Component (as opposed to the default server-side rendering)
+"use client"; // This line is added to mark the component as a Client Component
 
-import Head from 'next/head';
-import { useState } from 'react';
-import Image from 'next/image'; // Importing the optimized Image component from next/image
+import { useState } from "react";
 import SearchInput from '../components/SearchInput';
+import UserProfile from '../components/UserProfile';
+import RepoList from '../components/RepoList';
+import Link from "next/link";
 
-// Interface for GitHub user data fetched from the API
-interface GitHubUser {
-    login: string;
-    avatar_url: string;
-    name: string;
-    bio: string;
-    location: string;
-    public_repos: number;
+export default function UserSearch() {
+  const [userData, setUserData] = useState<any>(null);
+  const [repos, setRepos] = useState<any[]>([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleSearch = async (username: string) => {
+    setLoading(true);
+    setError('');
+    try {
+      const userResponse = await fetch(`https://api.github.com/users/${username}`);
+      if (!userResponse.ok) throw new Error('User not found');
+      const user = await userResponse.json();
+
+      const reposResponse = await fetch(`https://api.github.com/users/${username}/repos`);
+      const reposData = await reposResponse.json();
+
+      setUserData(user);
+      setRepos(reposData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadMoreRepos = async () => {
+    const nextPage = currentPage + 1;
+    const reposResponse = await fetch(`https://api.github.com/users/${userData.login}/repos?page=${nextPage}`);
+    const reposData = await reposResponse.json();
+    setRepos((prev) => [...prev, ...reposData]);
+    setCurrentPage(nextPage);
+  };
+
+  return (
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <h1 className="text-3xl font-bold">GitHub User Profile Search</h1>
+        
+        {/* Search Input */}
+        <SearchInput onSubmit={handleSearch} />
+
+        {loading && <p>Loading...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {userData && (
+          <UserProfile 
+            avatar={userData.avatar_url} 
+            username={userData.login} 
+            bio={userData.bio} 
+            location={userData.location} 
+            publicRepos={userData.public_repos} 
+          />
+        )}
+        {repos.length > 0 && <RepoList repos={repos} loadMore={loadMoreRepos} />}
+      </main>
+      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+        <Link href="/">
+          <button className="rounded-full bg-gray-500 text-white py-2 px-4 hover:bg-gray-600 transition duration-200">
+            Back to Home
+          </button>
+        </Link>
+      </footer>
+    </div>
+  );
 }
-
-const Home: React.FC = () => {
-    const [user, setUser] = useState<GitHubUser | null>(null); // State for storing user data
-    const [error, setError] = useState<string | null>(null); // State for handling errors
-
-    // Fetch user data from GitHub API based on the provided username
-    const handleSearch = async (username: string) => {
-        // Fetch data from the GitHub API
-        try {
-            const res = await fetch(`https://api.github.com/users/${username}`);
-            if (!res.ok) {
-                throw new Error('User not found');
-            }
-            const data: GitHubUser = await res.json();
-            setUser(data); // Update user state with the fetched data
-            setError(null); // Clear any existing errors
-        } catch (err) {
-            // Type checking to safely access error.message
-            if (err instanceof Error) {
-                setError(err.message); // Safely access the error message
-            } else {
-                setError('Something went wrong'); // Fallback for unknown error types
-            }
-            setUser(null); // Clear user state if an error occurs
-        }
-    };
-
-    return (
-        <div>
-            <Head>
-                <title>GitHub User Search</title>
-                <meta name="description" content="GitHub user profile search app" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-
-            <main className="max-w-4xl mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-4">GitHub User Profile Search</h1>
-                <SearchInput onSubmit={handleSearch} /> {/* Input component for search */}
-
-                {error && <p className="text-red-500 mt-2">{error}</p>} {/* Display error if any */}
-
-                {user && (
-                    <div className="mt-4">
-                        {/* Optimized Image component for user's avatar */}
-                        <Image 
-                            src={user.avatar_url} 
-                            alt="Avatar" 
-                            width={80} // Provide width to optimize the image
-                            height={80} // Provide height to optimize the image
-                            className="rounded-full mb-2" 
-                        />
-                        <h2 className="text-xl font-semibold">{user.name}</h2> {/* User's name */}
-                        <p className="text-gray-600">{user.bio}</p> {/* User's bio */}
-                        <p className="mt-2">
-                            Location: {user.location || 'Not specified'} {/* User's location */}
-                        </p>
-                        <p className="mt-1">
-                            Public Repositories: {user.public_repos} {/* User's public repos */}
-                        </p>
-                    </div>
-                )}
-            </main>
-        </div>
-    );
-};
-
-export default Home;
