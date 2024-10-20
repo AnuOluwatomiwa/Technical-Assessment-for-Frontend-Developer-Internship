@@ -14,10 +14,5 @@
         // Can also add TypeScript-specific rules here if needed
       }
     }
-  ],
-  "overrideConfig": {
-    "linterOptions": {
-      "reportUnusedDisableDirectives": true // Using this instead of the option i used before
-    }
-  }
+  ]
 }
