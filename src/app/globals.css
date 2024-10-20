@@ -1,7 +1,12 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto+Mono:wght@400;700;900&display=swap');
+
+/* Tailwind base, components, and utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Custom color variables for light/dark modes */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -14,12 +19,14 @@
   }
 }
 
+/* Body styles */
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Mono', Arial, Helvetica, sans-serif; /* Using Roboto Mono as the default font */
 }
 
+/* Utility class for balanced text wrapping */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
