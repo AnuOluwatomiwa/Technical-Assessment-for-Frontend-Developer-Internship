@@ -106,7 +106,19 @@ export default function UserSearch() {
                   Previous
                 </button>
               )}
-              <span>Page {currentPage} of {totalPages}</span>
+              <div className="flex space-x-2">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => goToPage(index + 1)}
+                    className={`py-2 px-4 rounded ${
+                      currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'
+                    } hover:bg-gray-300`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
               {currentPage < totalPages && (
                 <button
                   onClick={() => goToPage(currentPage + 1)}
@@ -114,14 +126,6 @@ export default function UserSearch() {
                   disabled={currentPage === totalPages} // Disable Next button on the last page
                 >
                   Next
-                </button>
-              )}
-              {hasMoreRepos && (
-                <button
-                  onClick={loadMoreRepos}
-                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                >
-                  Load More
                 </button>
               )}
             </div>
