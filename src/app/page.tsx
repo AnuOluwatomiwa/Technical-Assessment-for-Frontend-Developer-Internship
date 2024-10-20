@@ -28,10 +28,10 @@ export default function Home() {
 
           {/* Bamidele's (Cursive, reduced thickness) */}
           <h2 className="text-[60px] font-medium italic dark:text-white" style={{ fontFamily: "'Dancing Script', cursive" }}>
-            Bamidele's
+            Bamidele&apos;s
           </h2>
 
-          {/* Slimmer 'User Profile Search' */}
+          {/* Slimmer 'User Profile Search*/}
           <p className="text-3xl font-light dark:text-gray-100">
             <span style={{ fontFamily: "'Roboto Mono', monospace", fontWeight: 600 }}>GitHub</span>{" "}
             <span className="font-serif" style={{ fontWeight: 300 }}>User Profile Search</span>

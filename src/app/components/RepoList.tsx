@@ -2,28 +2,25 @@ import React from 'react';
 
 // Define the structure of a single repository
 interface Repo {
-    id: string; // The Unique identifier for the repository
-    name: string; // Repository's name
-    html_url: string; // URL leading to the repository on GitHub
-    description: string | null; // Description of the repository
-    stargazers_count: number; // Amount of stars the repository has ever received
-    forks_count: number; // Number of times said repository has been forked
+    id: number; // Change this to number if your API provides numbers
+    name: string;
+    html_url: string;
+    description: string | null;
+    stargazers_count: number;
+    forks_count: number;
 }
 
 // Props for the RepoList component, which will receive an array of repos
 interface RepoListProps {
-    repos: Repo[]; // Array of repositories
-    error?: string; // Optional error message to display
+    repos: Repo[];
+    error?: string;
 }
 
-// RepoList component for displaying a list of repositories
 const RepoList: React.FC<RepoListProps> = ({ repos, error }) => {
-    // If there's an error, display the error message
     if (error) {
         return <div className="text-red-500">{error}</div>;
     }
 
-    // If there are no repositories, this will display a friendly message
     if (repos.length === 0) {
         return <div>No repositories found.</div>;
     }
@@ -45,7 +42,6 @@ const RepoList: React.FC<RepoListProps> = ({ repos, error }) => {
                 ))}
             </ul>
         </div>
-
     );
 };
 
