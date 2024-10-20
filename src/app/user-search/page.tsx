@@ -7,14 +7,31 @@ import RepoList from '../components/RepoList';
 import Link from "next/link";
 import { motion } from "framer-motion"; // Importing framer-motion for animations
 
+// Define types for user data and repository
+interface UserData {
+  login: string;
+  avatar_url: string;
+  bio: string | null;
+  location: string | null;
+  public_repos: number;
+}
+
+interface Repo {
+  id: number;
+  name: string;
+  html_url: string;
+  description: string | null;
+  stargazers_count: number;
+  forks_count: number;
+}
+
 export default function UserSearch() {
-  const [userData, setUserData] = useState<any>(null);
-  const [repos, setRepos] = useState<any[]>([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasMoreRepos, setHasMoreRepos] = useState(false); // To track if there are more repos
-  const [totalPages, setTotalPages] = useState(0); // To track total number of pages
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [repos, setRepos] = useState<Repo[]>([]);
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0); // To track total number of pages
 
   const reposPerPage = 30;
 
@@ -26,44 +43,37 @@ export default function UserSearch() {
     try {
       const userResponse = await fetch(`https://api.github.com/users/${username}`);
       if (!userResponse.ok) throw new Error('User not found');
-      const user = await userResponse.json();
+      const user: UserData = await userResponse.json();
 
       const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?page=1&per_page=${reposPerPage}`);
-      const reposData = await reposResponse.json();
+      const reposData: Repo[] = await reposResponse.json();
 
       setUserData(user);
       setRepos(reposData);
-      setHasMoreRepos(reposData.length === reposPerPage); // If exactly 30 repos, there might be more
       setTotalPages(Math.ceil(user.public_repos / reposPerPage)); // Calculate total pages
-    } catch (err) {
-      setError(err.message);
+    } catch (err: unknown) { // Use 'unknown' instead of 'any'
+      if (err instanceof Error) {
+        setError(err.message); // Safely access 'message'
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const loadMoreRepos = async () => {
-    const nextPage = currentPage + 1;
-    try {
-      const reposResponse = await fetch(`https://api.github.com/users/${userData.login}/repos?page=${nextPage}&per_page=${reposPerPage}`);
-      const reposData = await reposResponse.json();
-      setRepos((prev) => [...prev, ...reposData]);
-      setCurrentPage(nextPage);
-      setHasMoreRepos(reposData.length === reposPerPage); // Check if there are still more repos
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   const goToPage = async (page: number) => {
     try {
-      const reposResponse = await fetch(`https://api.github.com/users/${userData.login}/repos?page=${page}&per_page=${reposPerPage}`);
-      const reposData = await reposResponse.json();
+      const reposResponse = await fetch(`https://api.github.com/users/${userData?.login}/repos?page=${page}&per_page=${reposPerPage}`);
+      const reposData: Repo[] = await reposResponse.json();
       setRepos(reposData);
       setCurrentPage(page);
-      setHasMoreRepos(reposData.length === reposPerPage);
-    } catch (err) {
-      setError(err.message);
+    } catch (err: unknown) { // Use 'unknown' instead of 'any'
+      if (err instanceof Error) {
+        setError(err.message); // Safely access 'message'
+      } else {
+        setError('An unknown error occurred');
+      }
     }
   };
 
