@@ -2,9 +2,22 @@
   "root": true,
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    // Custom rules can be added here if necessary
-    "react/no-unescaped-entities": "warn", // Change severity level if needed
-    "@typescript-eslint/no-unused-vars": "warn", // Change severity level if needed
-    "@typescript-eslint/no-explicit-any": "warn" // Change severity level if needed
+    // I have learnt that custom rules can be added here if necessary
+    "react/no-unescaped-entities": "warn", // Severity level can be changed if deemed so
+    "@typescript-eslint/no-unused-vars": "warn", // Severity level can be changed if deemed so
+    "@typescript-eslint/no-explicit-any": "warn" // Severity level can be changed if deemed so
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        // Can also add TypeScript-specific rules here if needed
+      }
+    }
+  ],
+  "overrideConfig": {
+    "linterOptions": {
+      "reportUnusedDisableDirectives": true // Using this instead of the option i used before
+    }
   }
 }
