@@ -21,7 +21,7 @@ const SearchInput: React.FC<{ onSubmit: (username: string) => void }> = ({ onSub
                 value={username}
                 onChange={handleChange}
                 placeholder="Enter GitHub username"
-                className="border rounded-lg px-4 py-2 w-full"
+                className="border rounded-lg px-4 py-2 w-full text-black" // Added text-black here
             />
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 block w-full">
                 Search
@@ -31,5 +31,3 @@ const SearchInput: React.FC<{ onSubmit: (username: string) => void }> = ({ onSub
 };
 
 export default SearchInput;
-
-
