@@ -32,23 +32,20 @@ const RepoList: React.FC<RepoListProps> = ({ repos, error }) => {
         <div className="mt-6">
             <h3 className="text-lg font-bold">Repositories</h3>
             <ul className="space-y-4">
-                {/* Map through the repos array and display each repository's information */}
-                {repos.map(repo => (
-                    <li key={repo.id} className="border rounded-lg p-4">
+                {repos.map((repo) => (
+                    <li key={repo.id} className="border rounded-lg p-4 hover:shadow-lg transition-all">
                         <h4 className="text-md font-semibold">
-                            {/* Link to the repository on GitHub */}
                             <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
                                 {repo.name}
                             </a>
                         </h4>
-                        {/* Shows the repository description or a default message if none exists */}
                         <p>{repo.description || 'No description'}</p>
-                        {/* Display of star and fork counts */}
                         <p className="text-gray-600">Stars: {repo.stargazers_count} | Forks: {repo.forks_count}</p>
                     </li>
                 ))}
             </ul>
         </div>
+
     );
 };
 
