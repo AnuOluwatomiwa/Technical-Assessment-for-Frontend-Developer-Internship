@@ -1,15 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: true,
+    experimental: {
+        appDir: true,
+    },
     images: {
-        remotePatterns: [
-            {
-                // Allow images from GitHub avatars
-                protocol: 'https',
-                hostname: 'avatars.githubusercontent.com',
-                port: '', // No specific port needed
-                pathname: '/**', // Matches any path under this domain
-            },
-        ],
+        domains: ['avatars.githubusercontent.com', 'nextjs.org'], // Allow images from these domains
     },
 };
 
