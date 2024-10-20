@@ -111,6 +111,7 @@ export default function UserSearch() {
                 <button
                   onClick={() => goToPage(currentPage + 1)}
                   className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+                  disabled={currentPage === totalPages} // Disable Next button on the last page
                 >
                   Next
                 </button>
