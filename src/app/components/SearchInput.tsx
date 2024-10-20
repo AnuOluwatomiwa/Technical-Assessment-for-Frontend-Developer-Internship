@@ -15,18 +15,22 @@ const SearchInput: React.FC<{ onSubmit: (username: string) => void }> = ({ onSub
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mt-4">
+        <form onSubmit={handleSubmit} className="mt-4 w-full max-w-md">
             <input
                 type="text"
                 value={username}
                 onChange={handleChange}
                 placeholder="Enter GitHub username"
-                className="border rounded-lg px-4 py-2 w-full text-black" // Added text-black here
+                className="border rounded-lg px-4 py-2 w-full text-black"
             />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 block w-full">
+            <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 block w-full transition-all hover:bg-blue-600"
+            >
                 Search
             </button>
         </form>
+
     );
 };
 
