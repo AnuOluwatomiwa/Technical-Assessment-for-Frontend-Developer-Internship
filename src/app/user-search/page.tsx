@@ -68,11 +68,11 @@ export default function UserSearch() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] dark:bg-gray-900 dark:text-white">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 sm:p-8 md:p-20 gap-8 overflow-hidden font-[family-name:var(--font-geist-sans)] dark:bg-gray-900 dark:text-white">
+      <main className="flex flex-col gap-6 row-start-2 items-center sm:items-start">
         {/* Animated heading for the User Profile Search */}
         <motion.h1
-          className="text-4xl font-bold"
+          className="text-3xl sm:text-4xl font-bold"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -97,7 +97,7 @@ export default function UserSearch() {
         {repos.length > 0 && (
           <>
             <RepoList repos={repos} />
-            <div className="mt-4 flex items-center space-x-4">
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-center space-x-0 sm:space-x-4 space-y-2 sm:space-y-0">
               {currentPage > 1 && (
                 <button
                   onClick={() => goToPage(currentPage - 1)}
@@ -106,12 +106,12 @@ export default function UserSearch() {
                   Previous
                 </button>
               )}
-              <div className="flex space-x-2">
+              <div className="flex space-x-1 overflow-x-auto">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <button
                     key={index + 1}
                     onClick={() => goToPage(index + 1)}
-                    className={`py-2 px-4 rounded ${
+                    className={`py-2 px-3 rounded text-sm ${
                       currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'
                     } hover:bg-gray-300`}
                   >
